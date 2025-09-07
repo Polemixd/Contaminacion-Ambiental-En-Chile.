@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Interactivo de Chile - DGAC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #005c97 0%, #00365a 100%);
+            color: white;
+            margin-bottom: 0;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .description {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .content {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        
+        /* Estilos para el carrusel */
+        .carousel-section {
+            margin-bottom: 30px;
+        }
+        
+        .carousel-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #005c97;
+            font-size: 1.8rem;
+        }
+        
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .slide {
+            min-width: 100%;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            position: relative;
+        }
+        
+        .slide i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #f1c40f;
+        }
+        
+        .slide-content {
+            text-align: center;
+            z-index: 2;
+        }
+        
+        .slide-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .slide-content p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .prev {
+            left: 15px;
+        }
+        
+        .next {
+            right: 15px;
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .indicator.active {
+            background: white;
+        }
+        
+        .map-section {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f0f5ff;
+            border-radius: 10px;
+        }
+        
+        .btn {
+            padding: 14px 25px;
+            background: linear-gradient(135deg, #005c97 0%, #00365a 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            background: #2c3e50;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        
+        .map-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .map-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            cursor: grab;
+            transition: transform 0.1s ease-out;
+            background-color: #e8f1f5;
+        }
+        
+        .map-image:active {
+            cursor: grabbing;
+        }
+        
+        .zoom-info {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+            z-index: 10;
+        }
+        
+        .instructions {
+            text-align: center;
+            padding: 15px;
+            background: #e8f4ff;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .instructions p {
+            margin: 5px 0;
+            font-size: 1.1rem;
+        }
+        
+        .info-panel {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+        
+        .info-panel h2 {
+            color: #005c97;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            border-bottom: 2px solid #005c97;
+            padding-bottom: 10px;
+        }
+        
+        .info-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .info-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .info-text p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .regions {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .regions h3 {
+            color: #005c97;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .region-list {
+            list-style: none;
+        }
+        
+        .region-list li {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+        
+        .region-list li:hover {
+            background: #e8eeff;
+        }
+        
+        .region-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, #005c97 0%, #00365a 100%);
+            color: white;
+            margin-top: 20px;
+        }
+        
+        .image-notice {
+            text-align: center;
+            padding: 10px;
+            background: #fff3cd;
+            border-radius: 5px;
+            margin-top: 10px;
+            color: #856404;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .map-container {
+                height: 450px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .slide {
+                height: 180px;
+            }
+            
+            .slide i {
+                font-size: 2.5rem;
+            }
+            
+            .slide-content h3 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-map-marked-alt"></i> Mapa Interactivo de Chile - DGAC</h1>
+            <p class="description">Mapa de Chile proporcionado por la Dirección General de Aeronáutica Civil. Desplázate manteniendo presionado el clic y haz zoom para explorar.</p>
+        </header>
+        
+        <div class="content">
+            <!-- Carrusel de diapositivas -->
+            <div class="carousel-section">
+                <h2 class="carousel-title">Dia 1 Calidad del Aire en Chile 2024/25.</h2>
+                <div class="carousel-container">
+                    <div class="carousel">
+                        <div class="slide">
+                            <i class="fas fa-lock"></i>
+                            <div class="slide-content">
+                                <h3>Día 2</h3>
+                                <p>Proximamente imagen sobre el cuidado ambiental.</p>
+                            </div>
+                        </div>
+                        <div class="slide" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+                            <i class="fas fa-lock"></i>
+                            <div class="slide-content">
+                                <h3>Día 3</h3>
+                                <p>Proximamente video sobre el problema de la contaminacion. </p>
+                            </div>
+                        </div>
+                        <div class="slide" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                            <i class="fas fa-lock"></i>
+                            <div class="slide-content">
+                                <h3>Día 4</h3>
+                                <p>Texto En tiempo Real con las toneladas de basura en chile.</p>
+                            </div>
+                        </div>
+                        <div class="slide" style="background: linear-gradient(135deg, #2ecc71, #27ae60);">
+                            <i class="fas fa-lock"></i>
+                            <div class="slide-content">
+                                <h3>Día 5</h3>
+                                <p>Proximamente Mapa sobre la contaminacion ambiental en chile.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+                    <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
+                    
+                    <div class="carousel-indicators">
+                        <div class="indicator active" onclick="goToSlide(0)"></div>
+                        <div class="indicator" onclick="goToSlide(1)"></div>
+                        <div class="indicator" onclick="goToSlide(2)"></div>
+                        <div class="indicator" onclick="goToSlide(3)"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-section">
+                <div class="controls">
+                    <button class="btn" onclick="zoomIn()"><i class="fas fa-search-plus"></i> Acercar</button>
+                    <button class="btn" onclick="zoomOut()"><i class="fas fa-search-minus"></i> Alejar</button>
+                    <button class="btn" onclick="resetView()"><i class="fas fa-sync"></i> Reiniciar Vista</button>
+                    <button class="btn" onclick="showNorth()"><i class="fas fa-mountain"></i> Zona Norte</button>
+                    <button class="btn" onclick="showCenter()"><i class="fas fa-city"></i> Zona Central</button>
+                    <button class="btn" onclick="showSouth()"><i class="fas fa-tree"></i> Zona Sur</button>
+                </div>
+                
+                <div class="instructions">
+                    <p><i class="fas fa-mouse-pointer"></i> <strong>Para desplazar el mapa:</strong> Mantén presionado el clic izquierdo y mueve el mouse</p>
+                    <p><i class="fas fa-search"></i> <strong>Para hacer zoom:</strong> Usa los botones de zoom o la rueda del mouse</p>
+                </div>
+                
+                <div class="map-container">
+                    <div class="map-wrapper">
+                        <img id="chile-map" class="map-image" src="https://www.dgac.gob.cl/wp-content/uploads/2024/12/DMC.jpg" alt="Mapa de Chile de la DGAC">
+                    </div>
+                    <div class="zoom-info">Zoom: 100%</div>
+                </div>
+                <div class="image-notice">
+                    <i class="fas fa-info-circle"></i> Mapa oficial de la Dirección General de Aeronáutica Civil de Chile.
+                </div>
+            </div>
+            
+            <div class="info-panel">
+                <h2><i class="fas fa-info-circle"></i> Chile: Un país de contrastes</h2>
+                <div class="info-content">
+                    <div class="info-text">
+                        <p>Chile es un país largo y angosto que se extiende a lo largo de la costa occidental de Sudamérica, con más de 4.300 km de longitud. Limita con Perú al norte, Bolivia al noreste y Argentina al este, mientras que el océano Pacífico baña su costa occidental.</p>
+                        <p>El territorio chileno incluye islas en el Pacífico Sur, como el archipiélago Juan Fernández y la isla de Pascua (ubicada en la Polinesia). Chile también reclama territorio en la Antártida.</p>
+                        <p>Utiliza los controles superiores para explorar las diferentes zonas geográficas de Chile, desde el árido desierto de Atacama en el norte hasta los fiordos y glaciares de la Patagonia en el sur.</p>
+                    </div>
+                    
+                    <div class="regions">
+                        <h3><i class="fas fa-map-marker-alt"></i> Regiones de Chile</h3>
+                        <ul class="region-list">
+                            <li><i class="fas fa-sun"></i> Norte Grande: Regiones de Arica y Parinacota, Tarapacá, Antofagasta</li>
+                            <li><i class="fas fa-cloud-sun"></i> Norte Chico: Regiones de Atacama, Coquimbo</li>
+                            <li><i class="fas fa-building"></i> Zona Central: Regiones de Valparaíso, Metropolitana, O'Higgins, Maule</li>
+                            <li><i class="fas fa-leaf"></i> Zona Sur: Regiones de Ñuble, Biobío, Araucanía, Los Ríos, Los Lagos</li>
+                            <li><i class="fas fa-snowflake"></i> Zona Austral: Regiones de Aysén, Magallanes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Mapa interactivo de Chile &copy; 2023 | Fuente: Dirección General de Aeronáutica Civil</p>
+        </div>
+    </div>
+
+    <script>
+        // Variables para controlar el zoom y posición del mapa
+        let scale = 1;
+        let posX = 0;
+        let posY = 0;
+        const map = document.getElementById('chile-map');
+        const mapContainer = document.querySelector('.map-container');
+        const zoomInfo = document.querySelector('.zoom-info');
+        let isDragging = false;
+        let startX, startY, startPosX, startPosY;
+        
+        // Límites de desplazamiento
+        let maxX = 0;
+        let maxY = 0;
+        let minX = 0;
+        let minY = 0;
+        
+        // Variables para el carrusel
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicators = document.querySelectorAll('.indicator');
+        const carousel = document.querySelector('.carousel');
+        
+        // Funciones del carrusel
+        function moveSlide(direction) {
+            currentSlide += direction;
+            
+            // Asegurarse de que currentSlide esté dentro de los límites
+            if (currentSlide < 0) {
+                currentSlide = slides.length - 1;
+            } else if (currentSlide >= slides.length) {
+                currentSlide = 0;
+            }
+            
+            updateCarousel();
+        }
+        
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+        
+        function updateCarousel() {
+            // Mover el carrusel
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Actualizar indicadores
+            indicators.forEach((indicator, index) => {
+                if (index === currentSlide) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+        
+        // Iniciar el carrusel automáticamente cada 5 segundos
+        setInterval(() => {
+            moveSlide(1);
+        }, 5000);
+        
+        // Asegurar que la imagen se cargue correctamente
+        map.onload = function() {
+            console.log("Mapa cargado correctamente");
+            calculateBounds();
+            resetView();
+        };
+        
+        // Si hay un error al cargar la imagen, mostrar un mensaje
+        map.onerror = function() {
+            console.error("Error al cargar el mapa");
+            map.alt = "Error al cargar el mapa de Chile. La imagen puede estar bloqueada por restricciones de seguridad.";
+            document.querySelector('.image-notice').innerHTML = 
+                '<i class="fas fa-exclamation-triangle"></i> Error al cargar la imagen. Esto puede deberse a restricciones de seguridad. Prueba a abrir esta página en un entorno local o usa una imagen diferente.';
+        };
+        
+        // Calcular los límites de desplazamiento
+        function calculateBounds() {
+            const containerWidth = mapContainer.offsetWidth;
+            const containerHeight = mapContainer.offsetHeight;
+            
+            // Calcular dimensiones efectivas de la imagen con el zoom actual
+            const effectiveWidth = map.naturalWidth * scale;
+            const effectiveHeight = map.naturalHeight * scale;
+            
+            // Calcular límites (mitad del exceso de tamaño)
+            maxX = Math.max(0, (effectiveWidth - containerWidth) / 2);
+            maxY = Math.max(0, (effectiveHeight - containerHeight) / 2);
+            minX = -maxX;
+            minY = -maxY;
+        }
+        
+        // Aplicar límites a la posición
+        function applyBounds() {
+            calculateBounds();
+            
+            // Aplicar límites
+            posX = Math.max(minX, Math.min(maxX, posX));
+            posY = Math.max(minY, Math.min(maxY, posY));
+            
+            updateMapTransform();
+        }
+        
+        // Funciones de zoom
+        function zoomIn() {
+            if (scale < 3) {
+                scale += 0.2;
+                applyBounds();
+            }
+        }
+        
+        function zoomOut() {
+            if (scale > 0.5) {
+                scale -= 0.2;
+                applyBounds();
+            }
+        }
+        
+        function resetView() {
+            scale = 1;
+            posX = 0;
+            posY = 0;
+            applyBounds();
+        }
+        
+        function showNorth() {
+            scale = 1.6;
+            posX = 200;
+            posY = 100;
+            applyBounds();
+        }
+        
+        function showCenter() {
+            scale = 1.4;
+            posX = -50;
+            posY = -100;
+            applyBounds();
+        }
+        
+        function showSouth() {
+            scale = 1.8;
+            posX = -300;
+            posY = -200;
+            applyBounds();
+        }
+        
+        // Actualizar la transformación CSS del mapa
+        function updateMapTransform() {
+            map.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+            zoomInfo.textContent = `Zoom: ${Math.round(scale * 100)}%`;
+        }
+        
+        // Funcionalidad de arrastrar el mapa
+        map.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            startPosX = posX;
+            startPosY = posY;
+            map.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+        
+        document.addEventListener('mousemove', function(e) {
+            if (isDragging) {
+                posX = startPosX + (e.clientX - startX);
+                posY = startPosY + (e.clientY - startY);
+                applyBounds();
+            }
+        });
+        
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+            map.style.cursor = 'grab';
+        });
+        
+        // Soporte para dispositivos táctiles
+        map.addEventListener('touchstart', function(e) {
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            startPosX = posX;
+            startPosY = posY;
+            map.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+        
+        document.addEventListener('touchmove', function(e) {
+            if (isDragging) {
+                posX = startPosX + (e.touches[0].clientX - startX);
+                posY = startPosY + (e.touches[0].clientY - startY);
+                applyBounds();
+                e.preventDefault();
+            }
+        });
+        
+        document.addEventListener('touchend', function() {
+            isDragging = false;
+            map.style.cursor = 'grab';
+        });
+        
+        // Zoom con la rueda del mouse
+        map.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            const rect = map.getBoundingClientRect();
+            const offsetX = e.clientX - rect.left;
+            const offsetY = e.clientY - rect.top;
+            
+            const delta = e.deltaY < 0 ? 0.2 : -0.2;
+            
+            if ((scale < 3 && delta > 0) || (scale > 0.5 && delta < 0)) {
+                const oldScale = scale;
+                scale += delta;
+                
+                // Ajustar la posición para hacer zoom hacia el puntero
+                const scaleRatio = scale / oldScale;
+                posX = offsetX - scaleRatio * (offsetX - posX);
+                posY = offsetY - scaleRatio * (offsetY - posY);
+                
+                applyBounds();
+            }
+        });
+        
+        // Recalcular límites cuando cambia el tamaño de la ventana
+        window.addEventListener('resize', function() {
+            calculateBounds();
+            applyBounds();
+        });
+        
+        // Inicializar el mapa
+        window.onload = function() {
+            // Si la imagen ya está cargada, inicializar la vista
+            if (map.complete && map.naturalHeight !== 0) {
+                calculateBounds();
+                resetView();
+            }
+        };
+    </script>
+</body>
+</html>
