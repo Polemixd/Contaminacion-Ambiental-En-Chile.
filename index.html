@@ -18,7 +18,7 @@
             color: #333;
             line-height: 1.6;
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
             overflow-x: hidden;
         }
         
@@ -54,10 +54,11 @@
         }
         
         .fullscreen-slide {
-            width: 90%;
-            height: 90%;
+            width: 95%;
+            height: 95%;
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
             border-radius: 15px;
             display: flex;
             flex-direction: column;
@@ -69,54 +70,34 @@
         .fullscreen-content {
             background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
             color: white;
-            padding: 30px;
+            padding: 20px;
             border-radius: 0 0 15px 15px;
         }
         
         .fullscreen-content h2 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: 10px;
+            text-align: center;
         }
         
         .fullscreen-content p {
-            font-size: 1.2rem;
-            margin-bottom: 25px;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            margin-bottom: 20px;
             max-width: 800px;
-        }
-        
-        .fullscreen-btn {
-            padding: 15px 30px;
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .fullscreen-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(135deg, #27ae60, #219653);
+            text-align: center;
         }
         
         .close-carousel {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             background: rgba(0, 0, 0, 0.7);
             color: white;
             border: none;
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             cursor: pointer;
             z-index: 10;
             transition: all 0.3s ease;
@@ -127,60 +108,60 @@
             transform: rotate(90deg);
         }
         
-        .environment-btn {
+        /* Botones flotantes base */
+        .floating-btn {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            padding: 15px 25px;
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            right: 20px;
+            padding: 12px 20px;
             color: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             z-index: 100;
+            white-space: nowrap;
+        }
+        
+        .floating-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .environment-btn {
+            bottom: 20px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
         }
         
         .environment-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #27ae60, #219653);
         }
         
-        /* Nuevo botón Día 3 */
         .day3-btn {
-            position: fixed;
-            bottom: 100px;
-            right: 30px;
-            padding: 15px 25px;
+            bottom: 80px;
             background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 100;
         }
         
         .day3-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             background: linear-gradient(135deg, #2980b9, #1f6399);
         }
         
-        /* Modal para el video */
-        .video-modal {
+        .stats-btn {
+            bottom: 140px;
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        
+        .stats-btn:hover {
+            background: linear-gradient(135deg, #8e44ad, #7d3c98);
+        }
+        
+        /* Modales */
+        .modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -193,22 +174,27 @@
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.5s ease;
+            padding: 20px;
         }
         
-        .video-modal.active {
+        .modal.active {
             display: flex;
             opacity: 1;
         }
         
-        .video-container {
-            width: 90%;
+        .modal-container {
+            width: 100%;
             max-width: 800px;
-            height: 70%;
             background: #000;
             border-radius: 15px;
             overflow: hidden;
             position: relative;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-height: 90vh;
+        }
+        
+        .video-container {
+            height: 70%;
         }
         
         .video-container iframe {
@@ -217,64 +203,108 @@
             border: none;
         }
         
-        .close-video {
+        .close-modal {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 12px;
+            right: 12px;
             background: rgba(0, 0, 0, 0.7);
             color: white;
             border: none;
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             cursor: pointer;
             z-index: 10;
             transition: all 0.3s ease;
         }
         
-        .close-video:hover {
+        .close-modal:hover {
             background: rgba(0, 0, 0, 0.9);
             transform: rotate(90deg);
         }
         
+        /* Modal para estadísticas */
+        .stats-modal-container {
+            background: white;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        
+        .stats-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 3px solid #9b59b6;
+        }
+        
+        .stats-content {
+            padding: 20px;
+        }
+        
+        .stats-text h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+        }
+        
+        .stats-text p {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            margin-bottom: 12px;
+            line-height: 1.5;
+            color: #34495e;
+        }
+        
+        .stats-highlight {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+        
         header {
             text-align: center;
-            padding: 30px 0;
+            padding: 20px 0;
             background: linear-gradient(135deg, #005c97 0%, #00365a 100%);
             color: white;
             margin-bottom: 0;
         }
         
         h1 {
-            font-size: 2.8rem;
-            margin-bottom: 15px;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            padding: 0 15px;
         }
         
         .description {
-            font-size: 1.2rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
             max-width: 800px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 15px;
         }
         
         .content {
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 15px;
         }
         
-        /* Estilos para el carrusel */
+        /* Carrusel */
         .carousel-section {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         
         .carousel-title {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             color: #005c97;
-            font-size: 1.8rem;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
         }
         
         .carousel-container {
@@ -294,7 +324,7 @@
         
         .slide {
             min-width: 100%;
-            height: 200px;
+            height: 180px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -304,22 +334,23 @@
         }
         
         .slide i {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: clamp(2rem, 6vw, 3rem);
+            margin-bottom: 10px;
         }
         
         .slide-content {
             text-align: center;
             z-index: 2;
+            padding: 0 10px;
         }
         
         .slide-content h3 {
-            font-size: 1.8rem;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
             margin-bottom: 5px;
         }
         
         .slide-content p {
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
             opacity: 0.9;
         }
         
@@ -330,10 +361,10 @@
             background: rgba(0, 0, 0, 0.5);
             color: white;
             border: none;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             cursor: pointer;
             z-index: 10;
             transition: all 0.3s ease;
@@ -344,26 +375,26 @@
         }
         
         .prev {
-            left: 15px;
+            left: 10px;
         }
         
         .next {
-            right: 15px;
+            right: 10px;
         }
         
         .carousel-indicators {
             position: absolute;
-            bottom: 15px;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 10px;
+            gap: 8px;
             z-index: 10;
         }
         
         .indicator {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.5);
             cursor: pointer;
@@ -374,6 +405,7 @@
             background: white;
         }
         
+        /* Mapa */
         .map-section {
             display: flex;
             flex-direction: column;
@@ -384,47 +416,46 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 15px;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 12px;
             background: #f0f5ff;
             border-radius: 10px;
         }
         
         .btn {
-            padding: 14px 25px;
+            padding: 10px 16px;
             background: linear-gradient(135deg, #005c97 0%, #00365a 100%);
             color: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.85rem;
             font-weight: 600;
             transition: all 0.3s ease;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            flex: 1;
+            min-width: 140px;
+            justify-content: center;
         }
         
         .btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        .btn:active {
-            transform: translateY(0);
         }
         
         .map-container {
             position: relative;
             width: 100%;
-            height: 600px;
+            height: 400px;
             background: #2c3e50;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .map-wrapper {
@@ -454,91 +485,107 @@
         
         .zoom-info {
             position: absolute;
-            bottom: 15px;
-            right: 15px;
+            bottom: 10px;
+            right: 10px;
             background: rgba(0, 0, 0, 0.7);
             color: white;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
             z-index: 10;
         }
         
         .instructions {
             text-align: center;
-            padding: 15px;
+            padding: 12px;
             background: #e8f4ff;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
         }
         
         .instructions p {
-            margin: 5px 0;
-            font-size: 1.1rem;
+            margin: 4px 0;
+            font-size: 0.9rem;
         }
         
-/* ESTILOS PARA CANDADO ABIERTO - ACTUALIZADO PARA TODAS LAS DIAPOSITIVAS */
-.fa-lock {
-    color: #f1c40f;
-}
+        /* ESTILOS PARA CANDADO ABIERTO */
+        .fa-lock {
+            color: #f1c40f;
+        }
 
-.fa-lock-open {
-    color: #2ecc71;
-}
+        .fa-lock-open {
+            color: #2ecc71;
+        }
 
-/* Animación para el candado que se abre - TODAS LAS DIAPOSITIVAS ACTIVAS */
-.slide.active .fa-lock {
-    animation: unlockAnimation 1s forwards;
-}
+        /* Animación para el candado que se abre */
+        .slide.active .fa-lock {
+            animation: unlockAnimation 1s forwards;
+        }
 
-@keyframes unlockAnimation {
-    0% {
-        transform: translateY(0) rotate(0);
-        color: #f1c40f;
-    }
-    25% {
-        transform: translateY(-20px) rotate(-5deg);
-    }
-    50% {
-        transform: translateY(0) rotate(5deg);
-    }
-    75% {
-        transform: translateY(-10px) rotate(-3deg);
-    }
-    100% {
-        transform: translateY(0) rotate(0);
-        color: #2ecc71;
-    }
-}
+        @keyframes unlockAnimation {
+            0% {
+                transform: translateY(0) rotate(0);
+                color: #f1c40f;
+            }
+            25% {
+                transform: translateY(-15px) rotate(-5deg);
+            }
+            50% {
+                transform: translateY(0) rotate(5deg);
+            }
+            75% {
+                transform: translateY(-8px) rotate(-3deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0);
+                color: #2ecc71;
+            }
+        }
 
-/* Cambiar el icono después de la animación - TODAS LAS DIAPOSITIVAS ACTIVAS */
-.slide.active .fa-lock::before {
-    content: "\f3c1"; /* Candado abierto */
-}
+        .slide.active .fa-lock::before {
+            content: "\f3c1";
+        }
+        
+        /* Panel de información */
+        .info-panel {
+            margin-top: 20px;
+        }
+        
+        .info-panel h2 {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 15px;
+            color: #005c97;
+            text-align: center;
+        }
+        
+        .info-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
         
         .info-text {
             flex: 1;
-            min-width: 300px;
         }
         
         .info-text p {
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            line-height: 1.6;
         }
         
         .regions {
             flex: 1;
-            min-width: 300px;
             background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 15px;
+            border-radius: 8px;
         }
         
         .regions h3 {
             color: #005c97;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            text-align: center;
         }
         
         .region-list {
@@ -546,12 +593,13 @@
         }
         
         .region-list li {
-            padding: 12px;
+            padding: 10px;
             border-bottom: 1px solid #ddd;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             transition: background 0.3s;
+            font-size: clamp(0.8rem, 2.2vw, 1rem);
         }
         
         .region-list li:hover {
@@ -564,7 +612,7 @@
         
         .footer {
             text-align: center;
-            padding: 25px;
+            padding: 20px;
             background: linear-gradient(135deg, #005c97 0%, #00365a 100%);
             color: white;
             margin-top: 20px;
@@ -572,69 +620,154 @@
         
         .image-notice {
             text-align: center;
-            padding: 10px;
+            padding: 8px;
             background: #fff3cd;
             border-radius: 5px;
             margin-top: 10px;
             color: #856404;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.2rem;
+
+        /* Media Queries para diferentes tamaños */
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            
+            .floating-btn {
+                padding: 15px 25px;
+                font-size: 1rem;
+                right: 30px;
+            }
+            
+            .environment-btn {
+                bottom: 30px;
+            }
+            
+            .day3-btn {
+                bottom: 100px;
+            }
+            
+            .stats-btn {
+                bottom: 170px;
             }
             
             .map-container {
-                height: 450px;
+                height: 500px;
             }
             
             .btn {
                 padding: 12px 20px;
-                font-size: 0.95rem;
-            }
-            
-            .content {
-                padding: 15px;
+                font-size: 0.9rem;
+                flex: none;
             }
             
             .slide {
-                height: 180px;
+                height: 200px;
             }
             
-            .slide i {
-                font-size: 2.5rem;
+            .info-content {
+                flex-direction: row;
             }
             
-            .slide-content h3 {
+            .carousel-btn {
+                width: 50px;
+                height: 50px;
                 font-size: 1.5rem;
             }
             
-            .fullscreen-content h2 {
-                font-size: 2rem;
+            .prev {
+                left: 15px;
             }
             
-            .fullscreen-content p {
+            .next {
+                right: 15px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .map-container {
+                height: 600px;
+            }
+            
+            .btn {
+                padding: 14px 25px;
                 font-size: 1rem;
             }
             
+            .floating-btn {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .floating-btn {
+                padding: 10px 16px;
+                font-size: 0.8rem;
+                right: 15px;
+            }
+            
             .environment-btn {
-                bottom: 20px;
-                right: 20px;
-                padding: 12px 20px;
-                font-size: 0.9rem;
+                bottom: 15px;
             }
             
             .day3-btn {
+                bottom: 70px;
+            }
+            
+            .stats-btn {
+                bottom: 125px;
+            }
+            
+            .map-container {
+                height: 350px;
+            }
+            
+            .btn {
+                min-width: 120px;
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .controls {
+                gap: 8px;
+            }
+            
+            .slide {
+                height: 160px;
+            }
+        }
+
+        /* Soporte para orientación landscape en móviles */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .floating-btn {
+                padding: 8px 12px;
+                font-size: 0.7rem;
+            }
+            
+            .environment-btn {
+                bottom: 10px;
+            }
+            
+            .day3-btn {
+                bottom: 50px;
+            }
+            
+            .stats-btn {
                 bottom: 90px;
-                right: 20px;
-                padding: 12px 20px;
-                font-size: 0.9rem;
+            }
+            
+            .map-container {
+                height: 250px;
+            }
+            
+            .modal-container {
+                max-height: 95vh;
             }
             
             .video-container {
-                width: 95%;
-                height: 50%;
+                height: 60%;
             }
         }
     </style>
@@ -654,22 +787,49 @@
     </div>
 
     <!-- Modal para el video -->
-    <div class="video-modal" id="videoModal">
-        <div class="video-container">
+    <div class="modal" id="videoModal">
+        <div class="modal-container video-container">
             <iframe id="youtubeVideo" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <button class="close-video" onclick="closeVideoModal()">
+            <button class="close-modal" onclick="closeVideoModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal para estadísticas -->
+    <div class="modal" id="statsModal">
+        <div class="modal-container stats-modal-container">
+            <img class="stats-image" src="https://concepto.de/wp-content/uploads/2021/04/contaminacion-ambiental-e1618532000745.jpg" alt="Contaminación ambiental">
+            <div class="stats-content">
+                <div class="stats-text">
+                    <h2><i class="fas fa-chart-bar"></i> Estadísticas de Residuos en Chile</h2>
+                    <div class="stats-highlight">
+                        Estimación Anual de Residuos
+                    </div>
+                    <p><i class="fas fa-trash"></i> <strong>Residuos totales:</strong> Se proyecta una cifra superior a los <strong>19 millones de toneladas anuales</strong>.</p>
+                    <p><i class="fas fa-home"></i> <strong>Residuos municipales (domiciliarios):</strong> Se estiman en torno a los <strong>9 millones de toneladas anuales</strong>.</p>
+                    <p style="text-align: center; margin-top: 15px; font-style: italic; color: #7f8c8d;">
+                        <i class="fas fa-info-circle"></i> Datos basados en proyecciones ambientales nacionales
+                    </p>
+                </div>
+            </div>
+            <button class="close-modal" onclick="closeStatsModal()">
                 <i class="fas fa-times"></i>
             </button>
         </div>
     </div>
 
     <!-- Botones flotantes -->
-    <button class="environment-btn" onclick="openFullscreenCarousel()">
-        <i class="fas fa-leaf"></i> Actualizacion Dia 2
+    <button class="floating-btn environment-btn" onclick="openFullscreenCarousel()">
+        <i class="fas fa-leaf"></i> Actualización Día 2
     </button>
 
-    <button class="day3-btn" onclick="openVideoModal()">
+    <button class="floating-btn day3-btn" onclick="openVideoModal()">
         <i class="fas fa-play-circle"></i> Día 3
+    </button>
+
+    <button class="floating-btn stats-btn" onclick="openStatsModal()">
+        <i class="fas fa-chart-bar"></i> Estadísticas
     </button>
 
     <div class="container">
@@ -739,6 +899,7 @@
                 <div class="instructions">
                     <p><i class="fas fa-mouse-pointer"></i> <strong>Para desplazar el mapa:</strong> Mantén presionado el clic izquierdo y mueve el mouse</p>
                     <p><i class="fas fa-search"></i> <strong>Para hacer zoom:</strong> Usa los botones de zoom o la rueda del mouse</p>
+                    <p><i class="fas fa-info-circle"></i> <strong>El dia 4 ya se esta actualizando.. </strong></p>
                 </div>
                 
                 <div class="map-container">
@@ -803,16 +964,14 @@
         const indicators = document.querySelectorAll('.indicator');
         const carousel = document.querySelector('.carousel');
         
-        // Variables para el carrusel de pantalla completa
+        // Variables para los modales
         const fullscreenCarousel = document.getElementById('fullscreenCarousel');
-        
-        // Variables para el modal de video
         const videoModal = document.getElementById('videoModal');
         const youtubeVideo = document.getElementById('youtubeVideo');
+        const statsModal = document.getElementById('statsModal');
         
-        // Funciones para el modal de video
+        // Funciones para los modales
         function openVideoModal() {
-            // Configurar el video para que se reproduzca automáticamente
             const videoId = "OnoRdprqEr4";
             youtubeVideo.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0`;
             videoModal.classList.add('active');
@@ -822,25 +981,19 @@
         function closeVideoModal() {
             videoModal.classList.remove('active');
             document.body.style.overflow = 'auto';
-            // Detener el video al cerrar el modal
             youtubeVideo.src = "";
         }
         
-        // Cerrar el modal de video con la tecla Escape
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && videoModal.classList.contains('active')) {
-                closeVideoModal();
-            }
-        });
+        function openStatsModal() {
+            statsModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
         
-        // Cerrar el modal haciendo clic fuera del video
-        videoModal.addEventListener('click', function(e) {
-            if (e.target === videoModal) {
-                closeVideoModal();
-            }
-        });
+        function closeStatsModal() {
+            statsModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
         
-        // Funciones del carrusel de página completa
         function openFullscreenCarousel() {
             fullscreenCarousel.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -851,112 +1004,87 @@
             document.body.style.overflow = 'auto';
         }
         
-        function openEnvironmentPage() {
-            window.open('https://www.un.org/sustainabledevelopment/es/climate-change/', '_blank');
-        }
-        
-        // Cerrar el carrusel con la tecla Escape
+        // Cerrar modales con tecla Escape
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && fullscreenCarousel.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                if (videoModal.classList.contains('active')) closeVideoModal();
+                if (statsModal.classList.contains('active')) closeStatsModal();
+                if (fullscreenCarousel.classList.contains('active')) closeFullscreenCarousel();
+            }
+        });
+        
+        // Cerrar modales haciendo clic fuera
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    if (modal.id === 'videoModal') closeVideoModal();
+                    if (modal.id === 'statsModal') closeStatsModal();
+                }
+            });
+        });
+        
+        fullscreenCarousel.addEventListener('click', function(e) {
+            if (e.target === fullscreenCarousel) {
                 closeFullscreenCarousel();
             }
         });
         
-        // Funciones del carrusel - ACTUALIZADO PARA TODAS LAS DIAPOSITIVAS
+        // Funciones del carrusel
         function moveSlide(direction) {
-            // Remover clase active de todas las diapositivas
-            slides.forEach(slide => {
-                slide.classList.remove('active');
-            });
+            slides.forEach(slide => slide.classList.remove('active'));
             
             currentSlide += direction;
             
-            // Asegurarse de que currentSlide esté dentro de los límites
             if (currentSlide < 0) {
                 currentSlide = slides.length - 1;
             } else if (currentSlide >= slides.length) {
                 currentSlide = 0;
             }
             
-            // Añadir clase active a TODAS las diapositivas cuando estén activas
             slides[currentSlide].classList.add('active');
-            
             updateCarousel();
         }
         
         function goToSlide(index) {
-            // Remover clase active de todas las diapositivas
-            slides.forEach(slide => {
-                slide.classList.remove('active');
-            });
-            
+            slides.forEach(slide => slide.classList.remove('active'));
             currentSlide = index;
-            
-            // Añadir clase active a la diapositiva actual
             slides[currentSlide].classList.add('active');
-            
             updateCarousel();
         }
         
         function updateCarousel() {
-            // Mover el carrusel
             carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
-            
-            // Actualizar indicadores
             indicators.forEach((indicator, index) => {
-                if (index === currentSlide) {
-                    indicator.classList.add('active');
-                } else {
-                    indicator.classList.remove('active');
-                }
+                indicator.classList.toggle('active', index === currentSlide);
             });
         }
         
-        // Iniciar el carrusel automáticamente cada 5 segundos
-        setInterval(() => {
-            moveSlide(1);
-        }, 6000);
+        // Iniciar el carrusel automáticamente
+        setInterval(() => moveSlide(1), 6000);
         
-        // Asegurar que la imagen se cargue correctamente
-        map.onload = function() {
-            console.log("Mapa cargado correctamente");
-            calculateBounds();
-            resetView();
-        };
-        
-        // Si hay un error al cargar la imagen, mostrar a mensaje
-        map.onerror = function() {
-            console.error("Error al cargar el mapa");
-            map.alt = "Error al cargar el mapa de Chile. La imagen puede estar bloqueada por restricciones de seguridad.";
-            document.querySelector('.image-notice').innerHTML = 
-                '<i class="fas fa-exclamation-triangle"></i> Error al cargar la imagen. Esto puede deberse a restricciones de seguridad. Prueba a abrir esta página en un entorno local o usa una imagen diferente.';
-        };
-        
-        // Calcular los límites de desplazamiento
+        // Funciones del mapa
         function calculateBounds() {
             const containerWidth = mapContainer.offsetWidth;
             const containerHeight = mapContainer.offsetHeight;
-            
-            // Calcular dimensiones efectivas de la imagen con el zoom actual
             const effectiveWidth = map.naturalWidth * scale;
             const effectiveHeight = map.naturalHeight * scale;
             
-            // Calcular límites (mitad del exceso de tamaño)
             maxX = Math.max(0, (effectiveWidth - containerWidth) / 2);
             maxY = Math.max(0, (effectiveHeight - containerHeight) / 2);
             minX = -maxX;
             minY = -maxY;
         }
         
-        // Aplicar límites a la posición
         function applyBounds() {
             calculateBounds();
-            
-            // Aplicar límites
             posX = Math.max(minX, Math.min(maxX, posX));
             posY = Math.max(minY, Math.min(maxY, posY));
-            
             updateMapTransform();
+        }
+        
+        function updateMapTransform() {
+            map.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+            zoomInfo.textContent = `Zoom: ${Math.round(scale * 100)}%`;
         }
         
         // Funciones de zoom
@@ -1002,14 +1130,16 @@
             applyBounds();
         }
         
-        // Actualizar la transformación CSS del mapa
-        function updateMapTransform() {
-            map.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-            zoomInfo.textContent = `Zoom: ${Math.round(scale * 100)}%`;
-        }
+        // Eventos del mapa
+        map.addEventListener('mousedown', startDrag);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', endDrag);
         
-        // Funcionalidad de arrastrar el mapa
-        map.addEventListener('mousedown', function(e) {
+        map.addEventListener('touchstart', startDragTouch);
+        document.addEventListener('touchmove', dragTouch);
+        document.addEventListener('touchend', endDrag);
+        
+        function startDrag(e) {
             isDragging = true;
             startX = e.clientX;
             startY = e.clientY;
@@ -1017,61 +1147,53 @@
             startPosY = posY;
             map.style.cursor = 'grabbing';
             e.preventDefault();
-        });
+        }
         
-        document.addEventListener('mousemove', function(e) {
-            if (isDragging) {
-                posX = startPosX + (e.clientX - startX);
-                posY = startPosY + (e.clientY - startY);
-                applyBounds();
-            }
-        });
-        
-        document.addEventListener('mouseup', function() {
-            isDragging = false;
-            map.style.cursor = 'grab';
-        });
-        
-        // Soporte para dispositivos táctiles
-        map.addEventListener('touchstart', function(e) {
-            isDragging = true;
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            startPosX = posX;
-            startPosY = posY;
-            map.style.cursor = 'grabbing';
-            e.preventDefault();
-        });
-        
-        document.addEventListener('touchmove', function(e) {
-            if (isDragging) {
-                posX = startPosX + (e.touches[0].clientX - startX);
-                posY = startPosY + (e.touches[0].clientY - startY);
-                applyBounds();
+        function startDragTouch(e) {
+            if (e.touches.length === 1) {
+                isDragging = true;
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                startPosX = posX;
+                startPosY = posY;
                 e.preventDefault();
             }
-        });
+        }
         
-        document.addEventListener('touchend', function() {
+        function drag(e) {
+            if (!isDragging) return;
+            posX = startPosX + (e.clientX - startX);
+            posY = startPosY + (e.clientY - startY);
+            applyBounds();
+        }
+        
+        function dragTouch(e) {
+            if (!isDragging || e.touches.length !== 1) return;
+            posX = startPosX + (e.touches[0].clientX - startX);
+            posY = startPosY + (e.touches[0].clientY - startY);
+            applyBounds();
+            e.preventDefault();
+        }
+        
+        function endDrag() {
             isDragging = false;
             map.style.cursor = 'grab';
-        });
+        }
         
-        // Zoom con la rueda del mouse
+        // Zoom con rueda del mouse
         map.addEventListener('wheel', function(e) {
             e.preventDefault();
-            const rect = map.getBoundingClientRect();
-            const offsetX = e.clientX - rect.left;
-            const offsetY = e.clientY - rect.top;
-            
             const delta = e.deltaY < 0 ? 0.2 : -0.2;
             
             if ((scale < 3 && delta > 0) || (scale > 0.5 && delta < 0)) {
                 const oldScale = scale;
                 scale += delta;
                 
-                // Ajustar la posición para hacer zoom hacia el puntero
+                const rect = map.getBoundingClientRect();
+                const offsetX = e.clientX - rect.left;
+                const offsetY = e.clientY - rect.top;
                 const scaleRatio = scale / oldScale;
+                
                 posX = offsetX - scaleRatio * (offsetX - posX);
                 posY = offsetY - scaleRatio * (offsetY - posY);
                 
@@ -1079,20 +1201,31 @@
             }
         });
         
-        // Recalcular límites cuando cambia el tamaño de la ventana
+        // Inicialización
+        window.addEventListener('load', function() {
+            if (map.complete) {
+                calculateBounds();
+                resetView();
+            }
+        });
+        
         window.addEventListener('resize', function() {
             calculateBounds();
             applyBounds();
         });
         
-        // Inicializar el mapa
-        window.onload = function() {
-            // Si la imagen ya está cargada, inicializar la vista
-            if (map.complete && map.naturalHeight !== 0) {
-                calculateBounds();
-                resetView();
-            }
-        };
+        // Precargar imágenes importantes
+        window.addEventListener('load', function() {
+            const importantImages = [
+                'https://concepto.de/wp-content/uploads/2021/04/contaminacion-ambiental-e1618532000745.jpg',
+                'https://www.dgac.gob.cl/wp-content/uploads/2024/12/DMC.jpg'
+            ];
+            
+            importantImages.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        });
     </script>
 </body>
 </html>
