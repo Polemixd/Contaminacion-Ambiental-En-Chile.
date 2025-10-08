@@ -160,6 +160,15 @@
             background: linear-gradient(135deg, #8e44ad, #7d3c98);
         }
         
+        .map5-btn {
+            bottom: 200px;
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+        
+        .map5-btn:hover {
+            background: linear-gradient(135deg, #d35400, #ba4a00);
+        }
+        
         /* Modales */
         .modal {
             position: fixed;
@@ -184,7 +193,7 @@
         
         .modal-container {
             width: 100%;
-            max-width: 800px;
+            max-width: 1000px;
             background: #000;
             border-radius: 15px;
             overflow: hidden;
@@ -265,6 +274,73 @@
             text-align: center;
             font-weight: bold;
             font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+        
+        /* Modal para Mapa Día 5 */
+        .map5-modal-container {
+            background: white;
+            max-height: 85vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .map5-content {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+        }
+        
+        .map5-image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .map5-image {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .map5-text-container {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+        }
+        
+        .map5-text h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+        }
+        
+        .map5-text p {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #34495e;
+        }
+        
+        .map5-highlight {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
         }
         
         header {
@@ -652,6 +728,10 @@
                 bottom: 170px;
             }
             
+            .map5-btn {
+                bottom: 240px;
+            }
+            
             .map-container {
                 height: 500px;
             }
@@ -699,6 +779,10 @@
                 padding: 15px 30px;
                 font-size: 1.1rem;
             }
+            
+            .map5-content {
+                flex-direction: row;
+            }
         }
 
         @media (max-width: 480px) {
@@ -720,6 +804,10 @@
                 bottom: 125px;
             }
             
+            .map5-btn {
+                bottom: 180px;
+            }
+            
             .map-container {
                 height: 350px;
             }
@@ -736,6 +824,19 @@
             
             .slide {
                 height: 160px;
+            }
+            
+            .map5-content {
+                flex-direction: column;
+            }
+            
+            .map5-image-container {
+                padding: 15px;
+                min-height: 250px;
+            }
+            
+            .map5-text-container {
+                padding: 20px;
             }
         }
 
@@ -756,6 +857,10 @@
             
             .stats-btn {
                 bottom: 90px;
+            }
+            
+            .map5-btn {
+                bottom: 130px;
             }
             
             .map-container {
@@ -819,6 +924,32 @@
         </div>
     </div>
 
+    <!-- Modal para Mapa Día 5 -->
+    <div class="modal" id="map5Modal">
+        <div class="modal-container map5-modal-container">
+            <div class="map5-content">
+                <div class="map5-image-container">
+                    <img class="map5-image" src="https://i.redd.it/139yndrmrkaf1.png" alt="Contaminación en el sur de Chile">
+                </div>
+                <div class="map5-text-container">
+                    <div class="map5-text">
+                        <h2><i class="fas fa-map"></i> Mapa Día 5 - Contaminación en el Sur de Chile</h2>
+                        <div class="map5-highlight">
+                            Análisis de la Calidad del Aire
+                        </div>
+                        <p>En el sur de Chile el aire es malo por el <strong>uso masivo de leña para calefacción</strong>, el <strong>frío</strong>, y la <strong>geografía cerrada</strong> que atrapa el humo, sobre todo en invierno.</p>
+                        <p style="margin-top: 15px; font-style: italic; color: #7f8c8d;">
+                            <i class="fas fa-info-circle"></i> Mapa que muestra los niveles de contaminación atmosférica en el sur de Chile
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <button class="close-modal" onclick="closeMap5Modal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Botones flotantes -->
     <button class="floating-btn environment-btn" onclick="openFullscreenCarousel()">
         <i class="fas fa-leaf"></i> Actualización Día 2
@@ -830,6 +961,10 @@
 
     <button class="floating-btn stats-btn" onclick="openStatsModal()">
         <i class="fas fa-chart-bar"></i> Estadísticas
+    </button>
+
+    <button class="floating-btn map5-btn" onclick="openMap5Modal()">
+        <i class="fas fa-map"></i> Mapa Dia 5
     </button>
 
     <div class="container">
@@ -947,285 +1082,205 @@
         let posX = 0;
         let posY = 0;
         const map = document.getElementById('chile-map');
-        const mapContainer = document.querySelector('.map-container');
+        const mapWrapper = document.querySelector('.map-wrapper');
         const zoomInfo = document.querySelector('.zoom-info');
         let isDragging = false;
-        let startX, startY, startPosX, startPosY;
-        
-        // Límites de desplazamiento
-        let maxX = 0;
-        let maxY = 0;
-        let minX = 0;
-        let minY = 0;
-        
-        // Variables para el carrusel
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const indicators = document.querySelectorAll('.indicator');
-        const carousel = document.querySelector('.carousel');
-        
-        // Variables para los modales
-        const fullscreenCarousel = document.getElementById('fullscreenCarousel');
-        const videoModal = document.getElementById('videoModal');
-        const youtubeVideo = document.getElementById('youtubeVideo');
-        const statsModal = document.getElementById('statsModal');
-        
-        // Funciones para los modales
-        function openVideoModal() {
-            const videoId = "OnoRdprqEr4";
-            youtubeVideo.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0`;
-            videoModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeVideoModal() {
-            videoModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            youtubeVideo.src = "";
-        }
-        
-        function openStatsModal() {
-            statsModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeStatsModal() {
-            statsModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-        
-        function openFullscreenCarousel() {
-            fullscreenCarousel.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeFullscreenCarousel() {
-            fullscreenCarousel.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-        
-        // Cerrar modales con tecla Escape
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                if (videoModal.classList.contains('active')) closeVideoModal();
-                if (statsModal.classList.contains('active')) closeStatsModal();
-                if (fullscreenCarousel.classList.contains('active')) closeFullscreenCarousel();
-            }
-        });
-        
-        // Cerrar modales haciendo clic fuera
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    if (modal.id === 'videoModal') closeVideoModal();
-                    if (modal.id === 'statsModal') closeStatsModal();
-                }
-            });
-        });
-        
-        fullscreenCarousel.addEventListener('click', function(e) {
-            if (e.target === fullscreenCarousel) {
-                closeFullscreenCarousel();
-            }
-        });
-        
-        // Funciones del carrusel
-        function moveSlide(direction) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            
-            currentSlide += direction;
-            
-            if (currentSlide < 0) {
-                currentSlide = slides.length - 1;
-            } else if (currentSlide >= slides.length) {
-                currentSlide = 0;
-            }
-            
-            slides[currentSlide].classList.add('active');
-            updateCarousel();
-        }
-        
-        function goToSlide(index) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            currentSlide = index;
-            slides[currentSlide].classList.add('active');
-            updateCarousel();
-        }
-        
-        function updateCarousel() {
-            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
-            indicators.forEach((indicator, index) => {
-                indicator.classList.toggle('active', index === currentSlide);
-            });
-        }
-        
-        // Iniciar el carrusel automáticamente
-        setInterval(() => moveSlide(1), 6000);
-        
-        // Funciones del mapa
-        function calculateBounds() {
-            const containerWidth = mapContainer.offsetWidth;
-            const containerHeight = mapContainer.offsetHeight;
-            const effectiveWidth = map.naturalWidth * scale;
-            const effectiveHeight = map.naturalHeight * scale;
-            
-            maxX = Math.max(0, (effectiveWidth - containerWidth) / 2);
-            maxY = Math.max(0, (effectiveHeight - containerHeight) / 2);
-            minX = -maxX;
-            minY = -maxY;
-        }
-        
-        function applyBounds() {
-            calculateBounds();
-            posX = Math.max(minX, Math.min(maxX, posX));
-            posY = Math.max(minY, Math.min(maxY, posY));
-            updateMapTransform();
-        }
-        
+        let startX, startY, initialX, initialY;
+
+        // Funciones para el mapa
         function updateMapTransform() {
             map.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
             zoomInfo.textContent = `Zoom: ${Math.round(scale * 100)}%`;
         }
-        
-        // Funciones de zoom
+
         function zoomIn() {
-            if (scale < 3) {
-                scale += 0.2;
-                applyBounds();
-            }
+            scale *= 1.2;
+            updateMapTransform();
         }
-        
+
         function zoomOut() {
-            if (scale > 0.5) {
-                scale -= 0.2;
-                applyBounds();
-            }
+            scale /= 1.2;
+            updateMapTransform();
         }
-        
+
         function resetView() {
             scale = 1;
             posX = 0;
             posY = 0;
-            applyBounds();
+            updateMapTransform();
         }
-        
+
         function showNorth() {
-            scale = 1.6;
-            posX = 50;
+            scale = 1.5;
             posY = 100;
-            applyBounds();
+            updateMapTransform();
         }
-        
+
         function showCenter() {
-            scale = 1.4;
-            posX = 100;
-            posY = -50;
-            applyBounds();
+            scale = 1.3;
+            posY = -100;
+            updateMapTransform();
         }
-        
+
         function showSouth() {
-            scale = 1.8;
-            posX = 100;
-            posY = -450;
-            applyBounds();
+            scale = 1.4;
+            posY = -300;
+            updateMapTransform();
         }
-        
-        // Eventos del mapa
-        map.addEventListener('mousedown', startDrag);
-        document.addEventListener('mousemove', drag);
-        document.addEventListener('mouseup', endDrag);
-        
-        map.addEventListener('touchstart', startDragTouch);
-        document.addEventListener('touchmove', dragTouch);
-        document.addEventListener('touchend', endDrag);
-        
+
+        // Eventos para arrastrar el mapa
+        mapWrapper.addEventListener('mousedown', startDrag);
+        mapWrapper.addEventListener('touchstart', startDragTouch);
+
         function startDrag(e) {
             isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
-            startPosX = posX;
-            startPosY = posY;
+            startX = e.clientX - posX;
+            startY = e.clientY - posY;
             map.style.cursor = 'grabbing';
             e.preventDefault();
         }
-        
+
         function startDragTouch(e) {
-            if (e.touches.length === 1) {
-                isDragging = true;
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
-                startPosX = posX;
-                startPosY = posY;
-                e.preventDefault();
-            }
-        }
-        
-        function drag(e) {
-            if (!isDragging) return;
-            posX = startPosX + (e.clientX - startX);
-            posY = startPosY + (e.clientY - startY);
-            applyBounds();
-        }
-        
-        function dragTouch(e) {
-            if (!isDragging || e.touches.length !== 1) return;
-            posX = startPosX + (e.touches[0].clientX - startX);
-            posY = startPosY + (e.touches[0].clientY - startY);
-            applyBounds();
+            isDragging = true;
+            startX = e.touches[0].clientX - posX;
+            startY = e.touches[0].clientY - posY;
             e.preventDefault();
         }
-        
-        function endDrag() {
+
+        function drag(e) {
+            if (!isDragging) return;
+            posX = e.clientX - startX;
+            posY = e.clientY - startY;
+            updateMapTransform();
+        }
+
+        function dragTouch(e) {
+            if (!isDragging) return;
+            posX = e.touches[0].clientX - startX;
+            posY = e.touches[0].clientY - startY;
+            updateMapTransform();
+        }
+
+        function stopDrag() {
             isDragging = false;
             map.style.cursor = 'grab';
         }
-        
-        // Zoom con rueda del mouse
-        map.addEventListener('wheel', function(e) {
+
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('touchmove', dragTouch);
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchend', stopDrag);
+
+        // Zoom con la rueda del mouse
+        mapWrapper.addEventListener('wheel', (e) => {
             e.preventDefault();
-            const delta = e.deltaY < 0 ? 0.2 : -0.2;
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            scale *= delta;
             
-            if ((scale < 3 && delta > 0) || (scale > 0.5 && delta < 0)) {
-                const oldScale = scale;
-                scale += delta;
-                
-                const rect = map.getBoundingClientRect();
-                const offsetX = e.clientX - rect.left;
-                const offsetY = e.clientY - rect.top;
-                const scaleRatio = scale / oldScale;
-                
-                posX = offsetX - scaleRatio * (offsetX - posX);
-                posY = offsetY - scaleRatio * (offsetY - posY);
-                
-                applyBounds();
+            // Ajustar la posición para hacer zoom hacia el cursor
+            const rect = mapWrapper.getBoundingClientRect();
+            const offsetX = e.clientX - rect.left;
+            const offsetY = e.clientY - rect.top;
+            
+            posX = offsetX - (offsetX - posX) * delta;
+            posY = offsetY - (offsetY - posY) * delta;
+            
+            updateMapTransform();
+        });
+
+        // Carrusel de diapositivas - CÓDIGO CORREGIDO
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicators = document.querySelectorAll('.indicator');
+        const carousel = document.querySelector('.carousel');
+
+        function moveSlide(direction) {
+            slides[currentSlide].classList.remove('active');
+            indicators[currentSlide].classList.remove('active');
+            
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            
+            slides[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+            
+            // ACTUALIZAR LA TRANSFORMACIÓN DEL CARRUSEL
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            indicators[currentSlide].classList.remove('active');
+            
+            currentSlide = index;
+            
+            slides[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+            
+            // ACTUALIZAR LA TRANSFORMACIÓN DEL CARRUSEL
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        // Iniciar el carrusel automáticamente
+        setInterval(() => moveSlide(1), 5000);
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            indicators[currentSlide].classList.remove('active');
+            
+            currentSlide = index;
+            
+            slides[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+        }
+
+        // Funciones para los modales
+        function openFullscreenCarousel() {
+            document.getElementById('fullscreenCarousel').classList.add('active');
+        }
+
+        function closeFullscreenCarousel() {
+            document.getElementById('fullscreenCarousel').classList.remove('active');
+        }
+
+        function openVideoModal() {
+            document.getElementById('videoModal').classList.add('active');
+            // Aquí puedes cambiar el ID del video de YouTube
+            document.getElementById('youtubeVideo').src = "https://www.youtube.com/embed/OnoRdprqEr4?autoplay=1";
+        }
+
+        function closeVideoModal() {
+            document.getElementById('videoModal').classList.remove('active');
+            document.getElementById('youtubeVideo').src = "";
+        }
+
+        function openStatsModal() {
+            document.getElementById('statsModal').classList.add('active');
+        }
+
+        function closeStatsModal() {
+            document.getElementById('statsModal').classList.remove('active');
+        }
+
+        function openMap5Modal() {
+            document.getElementById('map5Modal').classList.add('active');
+        }
+
+        function closeMap5Modal() {
+            document.getElementById('map5Modal').classList.remove('active');
+        }
+
+        // Cerrar modales al hacer clic fuera del contenido
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                closeFullscreenCarousel();
+                closeVideoModal();
+                closeStatsModal();
+                closeMap5Modal();
             }
         });
-        
-        // Inicialización
-        window.addEventListener('load', function() {
-            if (map.complete) {
-                calculateBounds();
-                resetView();
-            }
-        });
-        
-        window.addEventListener('resize', function() {
-            calculateBounds();
-            applyBounds();
-        });
-        
-        // Precargar imágenes importantes
-        window.addEventListener('load', function() {
-            const importantImages = [
-                'https://concepto.de/wp-content/uploads/2021/04/contaminacion-ambiental-e1618532000745.jpg',
-                'https://www.dgac.gob.cl/wp-content/uploads/2024/12/DMC.jpg'
-            ];
-            
-            importantImages.forEach(src => {
-                const img = new Image();
-                img.src = src;
-            });
-        });
+
+        // Inicializar el mapa
+        updateMapTransform();
     </script>
 </body>
 </html>
